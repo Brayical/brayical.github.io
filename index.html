@@ -50,10 +50,10 @@
     border: none;
     color: #888;
     font-family: 'Space Mono', monospace;
-    font-size: 11px;
+    font-size: clamp(10px, 0.9vw, 13px);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 10px 18px;
+    padding: 10px clamp(14px, 1.8vw, 28px);
     cursor: pointer;
     border-bottom: 2px solid transparent;
     white-space: nowrap;
@@ -66,37 +66,38 @@
     border-bottom-color: #f5b800;
   }
 
-  .page { display: none; padding: 40px 32px; }
+  .page { display: none; padding: clamp(24px, 4vw, 60px) clamp(20px, 5vw, 80px); }
   .page.active { display: block; }
 
   h2 {
-    font-size: 22px;
+    font-size: clamp(24px, 3vw, 42px);
     font-weight: 800;
     letter-spacing: -0.02em;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     color: #f5f0e8;
   }
 
   .subtitle {
     font-family: 'Space Mono', monospace;
-    font-size: 11px;
+    font-size: clamp(10px, 1vw, 13px);
     color: #666;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    margin-bottom: 32px;
+    margin-bottom: clamp(24px, 3vw, 48px);
   }
 
   .card {
     background: #141414;
     border: 1px solid #2a2a2a;
-    border-radius: 14px;
-    padding: 28px;
-    max-width: 380px;
+    border-radius: clamp(12px, 1.5vw, 20px);
+    padding: clamp(20px, 3vw, 48px);
+    width: 100%;
+    max-width: clamp(340px, 45vw, 600px);
   }
 
   label {
     font-family: 'Space Mono', monospace;
-    font-size: 10px;
+    font-size: clamp(9px, 0.8vw, 12px);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: #888;
@@ -111,9 +112,9 @@
     border-radius: 8px;
     color: #e8e4d9;
     font-family: 'Space Mono', monospace;
-    font-size: 14px;
-    padding: 12px 14px;
-    margin-bottom: 20px;
+    font-size: clamp(13px, 1.1vw, 16px);
+    padding: clamp(10px, 1.2vw, 16px) 14px;
+    margin-bottom: clamp(16px, 1.8vw, 24px);
     transition: border-color 0.2s;
     -webkit-appearance: none;
     appearance: none;
@@ -137,9 +138,9 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 20px;
+    margin-bottom: clamp(16px, 1.8vw, 24px);
     font-family: 'Space Mono', monospace;
-    font-size: 11px;
+    font-size: clamp(10px, 0.9vw, 13px);
     color: #888;
   }
 
@@ -178,13 +179,13 @@
 
   .calc-btn {
     width: 100%;
-    padding: 14px;
+    padding: clamp(12px, 1.3vw, 18px);
     background: #f5b800;
     color: #0a0a0a;
     border: none;
     border-radius: 8px;
     font-family: 'Syne', sans-serif;
-    font-size: 14px;
+    font-size: clamp(13px, 1.1vw, 16px);
     font-weight: 700;
     letter-spacing: 0.05em;
     cursor: pointer;
@@ -196,21 +197,21 @@
   .calc-btn:active { transform: scale(0.98); }
 
   .result-box {
-    margin-top: 20px;
+    margin-top: clamp(16px, 1.8vw, 28px);
     background: #0d0d0d;
     border: 1px solid #2a2a2a;
     border-radius: 8px;
-    padding: 16px 20px;
+    padding: clamp(14px, 1.5vw, 24px) clamp(16px, 2vw, 28px);
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    min-height: 60px;
+    gap: 4px;
+    min-height: 70px;
     justify-content: center;
   }
 
   .result-label {
     font-family: 'Space Mono', monospace;
-    font-size: 10px;
+    font-size: clamp(9px, 0.8vw, 12px);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: #666;
@@ -218,13 +219,13 @@
 
   .result-value {
     font-family: 'Space Mono', monospace;
-    font-size: 22px;
+    font-size: clamp(22px, 2.5vw, 36px);
     font-weight: 700;
     color: #f5b800;
     letter-spacing: -0.02em;
   }
 
-  .result-value.empty { color: #444; font-size: 16px; }
+  .result-value.empty { color: #444; font-size: clamp(14px, 1.2vw, 18px); }
 
   hr { border: none; border-top: 1px solid #222; margin: 20px 0; }
 
@@ -232,13 +233,13 @@
     background: #141414;
     border: 1px solid #2a2a2a;
     border-radius: 12px;
-    padding: 20px 24px;
-    max-width: 480px;
+    padding: clamp(16px, 2vw, 28px) clamp(20px, 2.5vw, 36px);
+    max-width: clamp(400px, 55vw, 780px);
   }
 
   .formula-title {
     font-family: 'Space Mono', monospace;
-    font-size: 10px;
+    font-size: clamp(9px, 0.8vw, 12px);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: #f5b800;
@@ -247,19 +248,19 @@
 
   .formula-expr {
     font-family: 'Space Mono', monospace;
-    font-size: 13px;
+    font-size: clamp(12px, 1.1vw, 16px);
     color: #c8c4b8;
     line-height: 1.9;
     background: #0d0d0d;
     border-radius: 8px;
-    padding: 12px 14px;
+    padding: clamp(10px, 1.2vw, 16px) 14px;
   }
 
   .info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    max-width: 480px;
+    gap: clamp(12px, 1.5vw, 22px);
+    max-width: clamp(400px, 55vw, 780px);
     margin-bottom: 28px;
   }
 
@@ -267,25 +268,25 @@
     background: #141414;
     border: 1px solid #2a2a2a;
     border-radius: 12px;
-    padding: 18px 20px;
+    padding: clamp(16px, 2vw, 30px) clamp(18px, 2.2vw, 32px);
   }
 
   .info-tile-icon {
-    font-size: 22px;
-    margin-bottom: 10px;
+    font-size: clamp(20px, 2.2vw, 32px);
+    margin-bottom: 12px;
   }
 
   .info-tile-name {
     font-weight: 700;
-    font-size: 14px;
+    font-size: clamp(13px, 1.2vw, 18px);
     color: #f5f0e8;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
   }
 
   .info-tile-desc {
-    font-size: 12px;
+    font-size: clamp(11px, 0.9vw, 14px);
     color: #777;
-    line-height: 1.5;
+    line-height: 1.6;
   }
 
   .tag {
@@ -295,10 +296,10 @@
     border: 1px solid #3a3000;
     border-radius: 4px;
     font-family: 'Space Mono', monospace;
-    font-size: 9px;
+    font-size: clamp(8px, 0.7vw, 11px);
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    padding: 2px 8px;
+    padding: 3px 10px;
     margin-bottom: 16px;
   }
 
@@ -422,7 +423,7 @@
       <h2>Formulas</h2>
       <p class="subtitle">Raw math behind each tool</p>
 
-      <div style="display:flex;flex-direction:column;gap:14px;max-width:480px;">
+      <div style="display:flex;flex-direction:column;gap:clamp(10px,1.4vw,20px);max-width:clamp(400px,55vw,780px);">
         <div class="formula-card">
           <div class="formula-title">Offline Gas Per Hour</div>
           <div class="formula-expr">(PPS / Divider) × 3600 × Boost × (1 / Divider)</div>
