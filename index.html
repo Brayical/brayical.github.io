@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>Roblox OL Tools</title>
 
+<!-- whoever sees this for some reason, this site is made with ai cause idk html and all that, but I came up with the formulas and whatnot -->
+
 <style>
 * { box-sizing: border-box; }
 
@@ -14,7 +16,6 @@ body {
     color: white;
 }
 
-/* NAVBAR */
 .navbar {
     display: flex;
     background: #020617;
@@ -37,7 +38,6 @@ body {
     border-bottom: 2px solid #22c55e;
 }
 
-/* PAGE */
 .page {
     display: none;
     justify-content: center;
@@ -49,7 +49,6 @@ body {
     display: flex;
 }
 
-/* CARD */
 .container {
     background: rgba(30, 41, 59, 0.85);
     backdrop-filter: blur(10px);
@@ -59,7 +58,6 @@ body {
     box-shadow: 0 10px 40px rgba(0,0,0,0.6);
 }
 
-/* INPUTS */
 input, select {
     width: 100%;
     padding: 12px;
@@ -71,7 +69,6 @@ input, select {
     color: white;
 }
 
-/* BUTTON */
 button.calc {
     width: 100%;
     padding: 12px;
@@ -86,58 +83,75 @@ button.calc:hover {
     transform: translateY(-2px);
 }
 
-/* RESULT */
 .result {
     margin-top: 15px;
     text-align: center;
     font-weight: bold;
 }
 
-/* INFO */
 .info {
     max-width: 500px;
     line-height: 1.5;
     opacity: 0.9;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin: 15px 0;
 }
 </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
 <div class="navbar">
     <button onclick="showPage('info')" class="active" id="btn-info">Info</button>
     <button onclick="showPage('calc')" id="btn-calc">Calculator</button>
-    <button onclick="showPage('reverse')" id="btn-reverse">Find Divider</button>
+    <button onclick="showPage('reverse')" id="btn-reverse">Divider Calculator</button>
+    <button onclick="showPage('formulas')" id="btn-formulas">Formulas</button>
 </div>
 
-<!-- INFO PAGE -->
 <div class="page activePage" id="info">
     <div class="container info">
-        <h2>Roblox Oil Tools</h2>
+        <h2>Roblox Oil Empire Calculator</h2>
         <p>This tool helps calculate offline gasoline and reverse-engineer values.</p>
 
         <p><b>Calculator:</b><br>
-        Calculates how much you will earn offline, per hour, from your gasoline boost and petrol per second.</p>
+        Calculates how much you will earn offline, per hour.</p>
 
-        <p><b>Find Divider:</b><br>
-        Not needed unless you will make your own calculator :)<br>
-        Mainly used for math and my laziness<br>
+        <p><b>Divider Calculator:</b><br>
+        Used to find divider values.</p>
     </div>
 </div>
 
-<!-- CALCULATOR -->
 <div class="page" id="calc">
     <div class="container">
-        <h2>Offline Calculator</h2>
+        <h2>Gas Calculator</h2>
 
         <label>Petrol Per Second</label>
         <input type="number" id="pps">
 
-        <label>Boost</label>
-        <select id="boost">
-            <option value="8">800%</option>
-        </select>
+        <!-- TOGGLE -->
+        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+            <input type="checkbox" id="offlineToggle" onchange="toggleMode()">
+            Offline
+        </label>
+
+        <!-- BOOST (hidden by default) -->
+        <div id="boostContainer" style="display:none;">
+            <label>Boost</label>
+            <select id="boost">
+                <option value="1">100%</option>
+                <option value="1.15">115%</option>
+                <option value="1.5">150%</option>
+                <option value="2">200%</option>
+                <option value="3">300%</option>
+                <option value="5">500%</option>
+                <option value="8">800%</option>
+                <option value="13">1,300%</option>
+            </select>
+        </div>
 
         <button class="calc" onclick="calculate()">Calculate</button>
 
@@ -145,10 +159,9 @@ button.calc:hover {
     </div>
 </div>
 
-<!-- REVERSE -->
 <div class="page" id="reverse">
     <div class="container">
-        <h2>Find Divider</h2>
+        <h2>Divider Calculator</h2>
 
         <label>Petrol Per Second</label>
         <input type="number" id="pps2">
@@ -158,16 +171,59 @@ button.calc:hover {
 
         <label>Boost</label>
         <select id="boost2">
-            <option value="0.8">800%</option>
+            <option value="1">100%</option>
+            <option value="1.15">115%</option>
+            <option value="1.5">150%</option>
+            <option value="2">200%</option>
+            <option value="3">300%</option>
+            <option value="5">500%</option>
+            <option value="8">800%</option>
+            <option value="13">1,300%</option>
         </select>
 
-        <button class="calc" onclick="reverseCalc()">Calculate</button>
+        <button class="calc" onclick="dividerCalc()">Calculate</button>
 
         <div class="result" id="result2">—</div>
     </div>
 </div>
 
+<div class="page" id="formulas">
+    <div class="container info">
+        <h2>Formulas</h2>
+
+        <p><b>Offline Gas Per Hour</b></p>
+        <p>
+        (PPS / Divider) × 3600 × Boost × (1 / Divider)
+        </p>
+
+        <hr>
+
+        <p><b>Divider Formula</b></p>
+        <p>
+        Step 1: (OfflineGas × BoostDecimal) ÷ 3600
+        </p>
+        <p>
+        Step 2: PPS ÷ result
+        </p>
+
+        <hr>
+
+        <p><b>Online Gas Per Hour</b></p>
+        <p>
+        PPS × 3600
+        </p>
+    </div>
+</div>
+
 <script>
+
+function toggleMode() {
+    const isOffline = document.getElementById("offlineToggle").checked;
+    const boostBox = document.getElementById("boostContainer");
+
+    boostBox.style.display = isOffline ? "block" : "none";
+}
+
 function showPage(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('activePage'));
     document.querySelectorAll('.navbar button').forEach(b => b.classList.remove('active'));
@@ -176,21 +232,28 @@ function showPage(page) {
     document.getElementById('btn-' + page).classList.add('active');
 }
 
-/* MAIN CALC */
 function calculate() {
     const pps = parseFloat(document.getElementById("pps").value);
-    const boost = parseFloat(document.getElementById("boost").value);
+    const isOffline = document.getElementById("offlineToggle").checked;
 
     if (isNaN(pps)) return;
 
-    const result = (pps / 15.625) * 3600 * boost * 0.15625;
+    let result;
+
+    if (!isOffline) {
+        // ONLINE
+        result = pps * 3600;
+    } else {
+        // OFFLINE
+        const boost = parseFloat(document.getElementById("boost").value);
+        result = (pps / 15.625) * 3600 * boost * 0.15625;
+    }
 
     document.getElementById("result1").innerText =
         "Result: " + Math.round(result).toLocaleString();
 }
 
-/* REVERSE CALC */
-function reverseCalc() {
+function dividerCalc() {
     const pps = parseFloat(document.getElementById("pps2").value);
     const offline = parseFloat(document.getElementById("offline").value);
     const boost = parseFloat(document.getElementById("boost2").value);
@@ -200,7 +263,8 @@ function reverseCalc() {
         return;
     }
 
-    const firstAnswer = (offline * boost) / 3600;
+    const decimalBoost = boost / 10;
+    const firstAnswer = (offline * decimalBoost) / 3600;
     const divider = pps / firstAnswer;
 
     const clean = parseFloat(divider.toFixed(6));
