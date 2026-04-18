@@ -16,6 +16,7 @@ body {
     color: white;
 }
 
+/* NAVBAR */
 .navbar {
     display: flex;
     background: #020617;
@@ -31,6 +32,7 @@ body {
     cursor: pointer;
     font-size: 15px;
     opacity: 0.7;
+    transition: 0.2s;
 }
 
 .navbar button.active {
@@ -38,6 +40,7 @@ body {
     border-bottom: 2px solid #22c55e;
 }
 
+/* PAGE */
 .page {
     display: none;
     justify-content: center;
@@ -49,46 +52,63 @@ body {
     display: flex;
 }
 
+/* CARD */
 .container {
-    background: rgba(30, 41, 59, 0.85);
-    backdrop-filter: blur(10px);
+    background: rgba(30, 41, 59, 0.75);
+    backdrop-filter: blur(14px);
     padding: 35px;
-    border-radius: 16px;
+    border-radius: 18px;
     width: 360px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    box-shadow:
+        0 10px 40px rgba(0,0,0,0.6),
+        inset 0 0 20px rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
 }
 
+/* INPUTS */
 input, select {
     width: 100%;
     padding: 12px;
     margin-top: 8px;
     margin-bottom: 15px;
-    border-radius: 8px;
-    border: none;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.05);
     background: #0f172a;
     color: white;
+    transition: 0.2s;
 }
 
+input:focus, select:focus {
+    outline: none;
+    border-color: #22c55e;
+    box-shadow: 0 0 10px rgba(34,197,94,0.3);
+}
+
+/* BUTTON */
 button.calc {
     width: 100%;
     padding: 12px;
-    border-radius: 8px;
+    border-radius: 10px;
     border: none;
     font-weight: bold;
     background: linear-gradient(135deg, #22c55e, #16a34a);
     cursor: pointer;
+    transition: 0.2s;
 }
 
 button.calc:hover {
     transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(34,197,94,0.4);
 }
 
+/* RESULT */
 .result {
     margin-top: 15px;
     text-align: center;
     font-weight: bold;
 }
 
+/* INFO */
 .info {
     max-width: 500px;
     line-height: 1.5;
@@ -99,6 +119,58 @@ hr {
     border: none;
     border-top: 1px solid rgba(255,255,255,0.1);
     margin: 15px 0;
+}
+
+/* TOGGLE */
+.toggleRow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 15px 0;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.switch {
+    position: relative;
+    width: 50px;
+    height: 26px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: #334155;
+    border-radius: 30px;
+    transition: 0.3s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    top: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+input:checked + .slider {
+    background: #22c55e;
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
 }
 </style>
 </head>
@@ -118,7 +190,7 @@ hr {
         <p>This tool helps calculate offline gasoline and reverse-engineer values.</p>
 
         <p><b>Calculator:</b><br>
-        Calculates how much you will earn offline, per hour.</p>
+        Calculates online or offline gas per hour.</p>
 
         <p><b>Divider Calculator:</b><br>
         Used to find divider values.</p>
@@ -132,13 +204,15 @@ hr {
         <label>Petrol Per Second</label>
         <input type="number" id="pps">
 
-        <!-- TOGGLE -->
-        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-            <input type="checkbox" id="offlineToggle" onchange="toggleMode()">
-            Offline
-        </label>
+        <div class="toggleRow">
+            <span>Online</span>
+            <label class="switch">
+                <input type="checkbox" id="offlineToggle" onchange="toggleMode()">
+                <span class="slider"></span>
+            </label>
+            <span>Offline</span>
+        </div>
 
-        <!-- BOOST (hidden by default) -->
         <div id="boostContainer" style="display:none;">
             <label>Boost</label>
             <select id="boost">
@@ -192,36 +266,25 @@ hr {
         <h2>Formulas</h2>
 
         <p><b>Offline Gas Per Hour</b></p>
-        <p>
-        (PPS / Divider) × 3600 × Boost × (1 / Divider)
-        </p>
+        <p>(PPS / Divider) × 3600 × Boost × (1 / Divider)</p>
 
         <hr>
 
         <p><b>Divider Formula</b></p>
-        <p>
-        Step 1: (OfflineGas × BoostDecimal) ÷ 3600
-        </p>
-        <p>
-        Step 2: PPS ÷ result
-        </p>
+        <p>Step 1: (OfflineGas × BoostDecimal) ÷ 3600</p>
+        <p>Step 2: PPS ÷ result</p>
 
         <hr>
 
         <p><b>Online Gas Per Hour</b></p>
-        <p>
-        PPS × 3600
-        </p>
+        <p>PPS × 3600</p>
     </div>
 </div>
 
 <script>
-
 function toggleMode() {
     const isOffline = document.getElementById("offlineToggle").checked;
-    const boostBox = document.getElementById("boostContainer");
-
-    boostBox.style.display = isOffline ? "block" : "none";
+    document.getElementById("boostContainer").style.display = isOffline ? "block" : "none";
 }
 
 function showPage(page) {
@@ -241,10 +304,8 @@ function calculate() {
     let result;
 
     if (!isOffline) {
-        // ONLINE
         result = pps * 3600;
     } else {
-        // OFFLINE
         const boost = parseFloat(document.getElementById("boost").value);
         result = (pps / 15.625) * 3600 * boost * 0.15625;
     }
