@@ -5,17 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Roblox OL Tools</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;600;700;800&display=swap');
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  ::-webkit-scrollbar { width:6px; height:6px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:#2a2a2a; border-radius:3px; }
+  ::-webkit-scrollbar-thumb:hover { background:#444; }
 
   html, body {
     height: 100%;
     background: #0a0a0a;
+    overflow-x: hidden;
   }
 
   .root {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Outfit', sans-serif;
     background: #0a0a0a;
     min-height: 100vh;
     color: #e8e4d9;
@@ -52,9 +58,10 @@
     background: none;
     border: none;
     color: #888;
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 0.08em;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     padding: 12px 22px;
     cursor: pointer;
@@ -73,15 +80,16 @@
   .page.active { display: block; }
 
   h2 {
-    font-size: clamp(28px, 4vw, 48px);
+    font-size: clamp(26px, 3.5vw, 44px);
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
     margin-bottom: 8px;
     color: #f5f0e8;
+    font-family: 'Outfit', sans-serif;
   }
 
   .subtitle {
-    font-family: 'Space Mono', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
     color: #666;
     letter-spacing: 0.06em;
@@ -99,7 +107,7 @@
   }
 
   label {
-    font-family: 'Space Mono', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -114,7 +122,7 @@
     border: 1px solid #2a2a2a;
     border-radius: 8px;
     color: #e8e4d9;
-    font-family: 'Space Mono', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 15px;
     padding: 13px 14px;
     margin-bottom: 20px;
@@ -142,7 +150,7 @@
     align-items: center;
     gap: 12px;
     margin-bottom: 20px;
-    font-family: 'Space Mono', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
     color: #888;
   }
@@ -187,7 +195,7 @@
     color: #0a0a0a;
     border: none;
     border-radius: 8px;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Outfit', sans-serif;
     font-size: 15px;
     font-weight: 700;
     letter-spacing: 0.05em;
@@ -213,7 +221,7 @@
   }
 
   .result-label {
-    font-family: 'Space Mono', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -221,7 +229,7 @@
   }
 
   .result-value {
-    font-family: 'Space Mono', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: clamp(20px, 2.8vw, 32px);
     font-weight: 700;
     color: #f5b800;
@@ -244,7 +252,7 @@
   }
 
   .formula-title {
-    font-family: 'Space Mono', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -253,7 +261,7 @@
   }
 
   .formula-expr {
-    font-family: 'Space Mono', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 14px;
     color: #c8c4b8;
     line-height: 1.9;
@@ -287,7 +295,7 @@
     color: #f5b800;
     border: 1px solid #3a3000;
     border-radius: 4px;
-    font-family: 'Space Mono', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -297,6 +305,197 @@
 
   #boostContainer { display: none; }
   #tcBoostContainer { display: none; }
+
+  /* ===== BASE OPTIMIZER ===== */
+  .opt-layout { display:flex; gap:20px; align-items:flex-start; }
+  .opt-left { flex:1; min-width:0; }
+  .opt-right { width:200px; flex-shrink:0; display:flex; flex-direction:column; gap:10px; }
+
+  /* Stats */
+  .opt-stats { display:flex; gap:10px; margin-bottom:14px; }
+  .opt-stat {
+    background:#111; border:1px solid #222; border-radius:12px;
+    padding:12px 16px; flex:1;
+  }
+  .opt-stat-label {
+    font-family:'JetBrains Mono',monospace; font-size:9px; text-transform:uppercase;
+    letter-spacing:.1em; color:#555; margin-bottom:4px;
+  }
+  .opt-stat-val {
+    font-family:'JetBrains Mono',monospace; font-size:22px; font-weight:700; color:#f5b800;
+  }
+
+  /* Legend — glow swatches */
+  .base-legend { display:flex; flex-wrap:wrap; gap:14px; margin-bottom:14px; align-items:center; }
+  .legend-item {
+    display:flex; align-items:center; gap:7px;
+    font-family:'JetBrains Mono',monospace; font-size:10px; color:#888;
+  }
+  .legend-glow {
+    width:18px; height:18px; border-radius:3px; flex-shrink:0;
+    border:1.5px solid transparent;
+  }
+  .lg-3 { background:#1a0508; border-color:#e03050; box-shadow:0 0 8px 2px rgba(220,40,70,.7); }
+  .lg-5 { background:#1a1000; border-color:#f5a800; box-shadow:0 0 8px 2px rgba(245,160,0,.7); }
+  .lg-2 { background:#041208; border-color:#20c050; box-shadow:0 0 8px 2px rgba(30,180,70,.7); }
+  .lg-s { background:#1e1e1e; border-color:#444; }
+
+  /* Grid wrapper */
+  .base-grid-outer { overflow:hidden; }
+  .opt-grid-wrap {
+    position:relative;
+    width:100%;
+    aspect-ratio:15/20;
+  }
+  .base-grid {
+    display:grid;
+    grid-template-columns:repeat(15,1fr);
+    grid-template-rows:repeat(20,1fr);
+    gap:1.5px;
+    width:100%; height:100%;
+    cursor:crosshair; user-select:none;
+  }
+  .drill-overlay { position:absolute; inset:0; pointer-events:none; }
+
+  /* ── Cells — all uniform grey, no zone coloring on cells ── */
+  .bc {
+    border-radius:2px; background:#1c1c1c; border:1px solid #2c2c2c;
+    transition:background .1s;
+    display:flex; align-items:center; justify-content:center;
+    overflow:visible; position:relative;
+  }
+  .bc:hover { filter:brightness(1.25); }
+  /* Plot gap — extra space on right/bottom edge of each 5x5 plot */
+  .bc.pr { margin-right:3px; }
+  .bc.pb { margin-bottom:3px; }
+
+  /* Zone cell colours */
+  /* Standard bottom 2 rows — green */
+  .bc:not(.z2):not(.z3):not(.z5) { background:#0a1f0d; border-color:#153520; }
+  /* 2x middle row — warm orange/yellow */
+  .bc.z2 { background:#231500; border-color:#3d2600; }
+  /* 3x top left & right — red */
+  .bc.z3 { background:#260608; border-color:#451010; }
+  /* 5x top middle — same red as 3x */
+  .bc.z5 { background:#260608; border-color:#451010; }
+
+
+
+  /* Zone badges — fill the entire center cell */
+  .zbadge {
+    font-family:'Outfit',sans-serif; font-weight:800; font-size:8px;
+    letter-spacing:0.04em;
+    white-space:nowrap; pointer-events:none; line-height:1;
+    position:absolute; inset:1px;
+    display:flex; align-items:center; justify-content:center;
+    border-radius:3px;
+    text-shadow:0 1px 3px rgba(0,0,0,0.8);
+  }
+  .b5 {
+    color:#ffd060;
+    background:rgba(245,160,0,.28);
+    box-shadow:inset 0 0 0 1px rgba(245,180,0,.5), 0 0 6px rgba(245,160,0,.3);
+  }
+  .b3 {
+    color:#ff7088;
+    background:rgba(220,40,70,.28);
+    box-shadow:inset 0 0 0 1px rgba(220,60,80,.5), 0 0 6px rgba(220,40,70,.3);
+  }
+  .b2 {
+    color:#60e890;
+    background:rgba(30,180,70,.28);
+    box-shadow:inset 0 0 0 1px rgba(40,200,80,.5), 0 0 6px rgba(30,180,70,.3);
+  }
+
+  /* Hover preview */
+  .bc.preview-ok  { background:rgba(30,160,80,.2) !important; outline:1.5px solid #20c050; outline-offset:-1px; }
+  .bc.preview-bad { background:rgba(180,30,50,.2) !important; outline:1.5px solid #e03050; outline-offset:-1px; }
+
+  /* ── Drill overlay cards ── */
+  .drill-card {
+    position:absolute; border-radius:5px;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:2px;
+    pointer-events:none; box-sizing:border-box; padding:4px; overflow:hidden;
+  }
+  .drill-card.dg-s {
+    background:rgba(22,22,22,.95);
+    box-shadow:inset 0 0 0 1.5px #666, 0 0 10px 2px rgba(120,120,120,.35);
+  }
+  .drill-card.dg-2 {
+    background:rgba(6,20,12,.95);
+    box-shadow:inset 0 0 0 1.5px #20c050, 0 0 12px 3px rgba(30,180,70,.5);
+  }
+  .drill-card.dg-3 {
+    background:rgba(22,5,10,.95);
+    box-shadow:inset 0 0 0 1.5px #e03050, 0 0 12px 3px rgba(220,40,70,.5);
+  }
+  .drill-card.dg-5 {
+    background:rgba(20,14,0,.95);
+    box-shadow:inset 0 0 0 1.5px #f5a800, 0 0 12px 3px rgba(245,160,0,.5);
+  }
+  .drill-card-name {
+    font-family:'Outfit',sans-serif; font-weight:700;
+    color:#eee; text-align:center; line-height:1.2;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;
+  }
+  .drill-card-pps {
+    font-family:'JetBrains Mono',monospace; font-weight:700;
+    color:#f5a800; text-align:center; line-height:1;
+  }
+  .drill-card.dg-2 .drill-card-pps { color:#20c050; }
+  .drill-card.dg-3 .drill-card-pps { color:#e03050; }
+
+  /* 1x1: initials badge — same size as cell */
+  .drill-card.size-1x1 {
+    flex-direction:column; gap:1px; padding:2px;
+  }
+
+  /* Controls */
+  .opt-controls { display:flex; gap:10px; margin-top:12px; }
+  .opt-rotate-btn, .opt-clear-btn {
+    padding:9px 16px; border-radius:8px; border:1px solid #2a2a2a;
+    background:#111; color:#999;
+    font-family:'Outfit',sans-serif; font-size:12px; font-weight:600;
+    cursor:pointer; transition:all .15s;
+    display:flex; align-items:center; gap:7px;
+  }
+  .opt-rotate-btn:hover { border-color:#f5a800; color:#f5a800; background:#1a1200; }
+  .opt-clear-btn:hover  { border-color:#e03050; color:#e03050; background:#160308; }
+  .opt-keyhint {
+    background:#1e1e1e; border:1px solid #3a3a3a; border-radius:3px;
+    padding:1px 5px; font-size:9px; color:#666;
+    font-family:'JetBrains Mono',monospace;
+  }
+
+  /* Right panel */
+  .opt-drill-card {
+    background:#111; border:1px solid #222; border-radius:12px; padding:14px 16px;
+  }
+  .opt-drill-card-name {
+    font-family:'Outfit',sans-serif; font-weight:700; font-size:14px;
+    color:#f5a800; margin-bottom:6px;
+  }
+  .opt-drill-card-stats {
+    font-family:'JetBrains Mono',monospace; font-size:10px;
+    color:#666; line-height:1.8;
+  }
+  .opt-panel-section-label {
+    font-family:'Outfit',sans-serif; font-size:10px; font-weight:600;
+    text-transform:uppercase; letter-spacing:.1em; color:#555;
+  }
+  .opt-drill-select {
+    width:100%; background:#0a0a0a; border:1px solid #222;
+    border-radius:8px; color:#ccc;
+    font-family:'JetBrains Mono',monospace; font-size:10px;
+    padding:4px 0; appearance:none; overflow-y:auto;
+  }
+  .opt-drill-select:focus { outline:none; border-color:#f5a800; }
+  .opt-drill-select option { padding:5px 10px; background:#0d0d0d; color:#bbb; }
+  .opt-drill-select option:checked { background:#1a1200; color:#f5a800; }
+  .opt-panel-hint {
+    font-family:'JetBrains Mono',monospace; font-size:9px; color:#3a3a3a; line-height:1.7;
+  }
 </style>
 
 <!-- whoever sees this for some reason, this site is made with ai cause idk html and all that, but I came up with the formulas and whatnot -->
@@ -310,6 +509,7 @@
       <button class="nav-btn" onclick="showPage('reverse',this)">Divider</button>
       <button class="nav-btn" onclick="showPage('time',this)">Time Calculator</button>
       <button class="nav-btn" onclick="showPage('formulas',this)">Formulas</button>
+      <button class="nav-btn" onclick="showPage('optimizer',this)">Base Optimizer</button>
     </nav>
 
     <!-- INFO -->
@@ -540,6 +740,49 @@
       </div>
     </div>
 
+
+    <!-- BASE OPTIMIZER -->
+    <div class="page" id="page-optimizer">
+      <div class="tag">Layout Tool</div>
+      <h2>Base Optimizer</h2>
+      <p class="subtitle">Place drills &amp; maximize effiency</p>
+
+      <div class="opt-layout">
+
+        <!-- LEFT: stats + grid -->
+        <div class="opt-left">
+          <div class="opt-stats">
+            <div class="opt-stat"><div class="opt-stat-label">Total Drills</div><div class="opt-stat-val" id="stat-drills">0</div></div>
+            <div class="opt-stat"><div class="opt-stat-label">Total Output</div><div class="opt-stat-val" id="stat-pps">0 /s</div></div>
+          </div>
+
+          <div class="base-grid-outer">
+            <div class="opt-grid-wrap" id="gridWrap">
+              <div class="base-grid" id="baseGrid"></div>
+              <div class="drill-overlay" id="drillOverlay"></div>
+            </div>
+          </div>
+          <div class="opt-controls">
+            <button class="opt-rotate-btn" onclick="rotateSelected()">&#8635; Rotate <span class="opt-keyhint">R</span></button>
+            <button class="opt-clear-btn" onclick="clearGrid()">&#128465; Clear All</button>
+          </div>
+        </div>
+
+        <!-- RIGHT: drill panel -->
+        <div class="opt-right">
+          <div class="opt-drill-card" id="drillInfo">
+            <div class="opt-drill-card-name">—</div>
+            <div class="opt-drill-card-stats"></div>
+          </div>
+          <div class="opt-panel-section-label">Standard Drills</div>
+          <select class="opt-drill-select" id="drillSelect" size="12"></select>
+          <div class="opt-panel-section-label" style="margin-top:10px;">Special Drills</div>
+          <select class="opt-drill-select" id="drillSelectSpecial" size="4"></select>
+          <div class="opt-panel-hint">Click to place &bull; Right-click to remove</div>
+        </div>
+
+      </div>
+    </div>
   </div>
 </div>
 
@@ -706,6 +949,365 @@ function timeCalc() {
   timeEl.textContent = formatTime(hoursNeeded);
   timeEl.className = 'result-value';
 }
+
+
+
+// ===== BASE OPTIMIZER =====
+(function() {
+  const COLS = 15, ROWS = 20;
+
+  const STANDARD_DRILLS = [
+    { name:'Basic Drill',             pps:1,    w:1, h:1 },
+    { name:'Strong Drill',            pps:3,    w:1, h:1 },
+    { name:'Enhanced Drill',          pps:4,    w:1, h:1 },
+    { name:'Speed Drill',             pps:6,    w:1, h:1 },
+    { name:'Reinforced Drill',        pps:8,    w:1, h:1 },
+    { name:'Industrial Drill',        pps:10,   w:1, h:1 },
+    { name:'Double Industrial Drill', pps:12,   w:1, h:2 },
+    { name:'Turbo Drill',             pps:16,   w:1, h:1 },
+    { name:'Mega Drill',              pps:20,   w:1, h:1 },
+    { name:'Mega Emerald Drill',      pps:25,   w:1, h:1 },
+    { name:'Hell Drill',              pps:35,   w:1, h:1 },
+    { name:'Plasma Drill',            pps:50,   w:1, h:1 },
+    { name:'Huge Long Drill',         pps:220,  w:2, h:2 },
+    { name:'Mega Plasma Drill',       pps:275,  w:2, h:2 },
+    { name:'Multi Drill',             pps:350,  w:2, h:2 },
+    { name:'Lava Drill',              pps:600,  w:2, h:2 },
+    { name:'Ice Plasma Drill',        pps:800,  w:2, h:2 },
+    { name:'Crystal Drill',           pps:1500, w:2, h:2 },
+    { name:'Diamond Drill',           pps:2750, w:2, h:2 },
+    { name:'Ruby Drill',              pps:4500, w:2, h:2 },
+    { name:'Fusion Drill',            pps:7500, w:2, h:2 },
+  ];
+
+  const SPECIAL_DRILLS = [
+    { name:'Plasma Drill',      pps:50,  w:1, h:1 },
+    { name:'Mini Diamond Drill',pps:100, w:1, h:1 },
+    { name:'Mini Ruby Drill',   pps:67,  w:1, h:1 },
+    { name:'Quantum Drill',     pps:175, w:1, h:2 },
+  ];
+
+  // Combined list: standard first, then special (indices 0..20 = standard, 21..23 = special)
+  const ALL_DRILLS = [...STANDARD_DRILLS, ...SPECIAL_DRILLS];
+
+  let selectedIdx = 0;   // index into ALL_DRILLS
+  let rotated = false;
+  const placed = Array.from({length:ROWS}, () => Array(COLS).fill(null));
+
+  // ── Helpers ──────────────────────────────────────────────────────────────
+  function getZone(r, c) {
+    const pRow = Math.floor(r/5), pCol = Math.floor(c/5);
+    if (pRow === 0) return pCol === 1 ? 'z5' : 'z3';
+    if (pRow === 1) return 'z2';
+    return 'zs';
+  }
+  function getMult(zone) { return {z5:5,z3:3,z2:2,zs:1}[zone]||1; }
+
+  function sameZone(ar, ac, w, h) {
+    const pR0=Math.floor(ar/5), pC0=Math.floor(ac/5);
+    for (let dr=0;dr<h;dr++) for (let dc=0;dc<w;dc++)
+      if (Math.floor((ar+dr)/5)!==pR0||Math.floor((ac+dc)/5)!==pC0) return false;
+    return true;
+  }
+  function allFree(ar, ac, w, h) {
+    for (let dr=0;dr<h;dr++) for (let dc=0;dc<w;dc++) {
+      const r=ar+dr,c=ac+dc;
+      if (r>=ROWS||c>=COLS||placed[r][c]) return false;
+    }
+    return true;
+  }
+  function getDims() {
+    const d = ALL_DRILLS[selectedIdx];
+    return rotated ? {w:d.h,h:d.w} : {w:d.w,h:d.h};
+  }
+  function fmtPps(v) {
+    if (v>=1e9) return (v/1e9).toFixed(2)+'B';
+    if (v>=1e6) return (v/1e6).toFixed(2)+'M';
+    if (v>=1e3) return (v/1e3).toFixed(v%1e3===0?0:1)+'K';
+    return v.toLocaleString();
+  }
+
+  // ── DOM refs ─────────────────────────────────────────────────────────────
+  const gridEl    = document.getElementById('baseGrid');
+  const overlayEl = document.getElementById('drillOverlay');
+  const wrapEl    = document.getElementById('gridWrap');
+  const cells = [];
+  const drillCards = {}; // key: "ar_ac" -> overlay div
+
+  // ── Build grid ────────────────────────────────────────────────────────────
+  function buildGrid() {
+    gridEl.innerHTML = '';
+    overlayEl.innerHTML = '';
+    Object.keys(drillCards).forEach(k => delete drillCards[k]);
+    cells.length = 0;
+    for (let r=0;r<ROWS;r++) {
+      cells[r]=[];
+      for (let c=0;c<COLS;c++) {
+        const el = document.createElement('div');
+        el.className = 'bc';
+        const zone = getZone(r,c);
+        // Colour cells by zone
+        if (zone==='z3') el.classList.add('z3');
+        else if (zone==='z5') el.classList.add('z5');
+        else if (zone==='z2') el.classList.add('z2');
+        const lRow = r % 5, lCol = c % 5;
+
+        // Plot gap markers
+        if (lCol === 4) el.classList.add('pr');
+        if (lRow === 4) el.classList.add('pb');
+        // Zone badge at center of each plot
+        if (lRow === 2 && lCol === 2) {
+          if (zone==='z5') el.innerHTML='<span class="zbadge b5">5×</span>';
+          else if (zone==='z3') el.innerHTML='<span class="zbadge b3">3×</span>';
+          else if (zone==='z2') el.innerHTML='<span class="zbadge b2">2×</span>';
+        }
+        el.addEventListener('click',       ()=>handleClick(r,c));
+        el.addEventListener('contextmenu', e=>{ e.preventDefault(); removeDrill(r,c); });
+        el.addEventListener('mouseenter',  ()=>handleHover(r,c,true));
+        el.addEventListener('mouseleave',  ()=>handleHover(r,c,false));
+        gridEl.appendChild(el);
+        cells[r][c] = el;
+      }
+    }
+  }
+
+  // ── Overlay card positioning ──────────────────────────────────────────────
+  // Compute px rect for a drill at (ar,ac) with dims (w,h)
+  function cellRect(r, c) {
+    const el = cells[r][c];
+    const gRect = wrapEl.getBoundingClientRect();
+    const cRect = el.getBoundingClientRect();
+    return {
+      left:   cRect.left - gRect.left,
+      top:    cRect.top  - gRect.top,
+      width:  cRect.width,
+      height: cRect.height,
+    };
+  }
+
+  function renderOverlayCard(ar, ac, w, h, d, boostedPps, zone) {
+    const key = ar+'_'+ac;
+    let card = drillCards[key];
+    if (!card) {
+      card = document.createElement('div');
+      card.className = 'drill-card';
+      overlayEl.appendChild(card);
+      drillCards[key] = card;
+    }
+
+    const tl = cellRect(ar, ac);
+    const br = cellRect(ar+h-1, ac+w-1);
+    const cardW = br.left + br.width  - tl.left;
+    const cardH = br.top  + br.height - tl.top;
+
+    const dgClass = {zs:'dg-s',z2:'dg-2',z3:'dg-3',z5:'dg-5'}[zone]||'dg-s';
+    const is1x1 = (w===1 && h===1);
+
+    card.className = 'drill-card ' + dgClass + (is1x1 ? ' size-1x1' : '');
+
+    // ── 1x1: show initials inside the cell, PPS below ──
+    if (is1x1) {
+      card.style.left   = tl.left + 'px';
+      card.style.top    = tl.top  + 'px';
+      card.style.width  = cardW   + 'px';
+      card.style.height = cardH   + 'px';
+      // Build initials from significant words (skip "Drill")
+      const initials = d.name
+        .split(' ')
+        .filter(w => w.toLowerCase() !== 'drill')
+        .map(w => w[0].toUpperCase())
+        .join('');
+      const initSz = Math.max(7, Math.min(12, cardW * 0.32));
+      const ppsSz  = Math.max(5, Math.min(8,  cardW * 0.18));
+      card.innerHTML =
+        '<div style="font-family:Outfit,sans-serif;font-weight:800;font-size:'+initSz+'px;color:#eee;line-height:1;text-align:center">'+initials+'</div>' +
+        '<div class="drill-card-pps" style="font-size:'+ppsSz+'px;line-height:1;text-align:center">'+fmtPps(boostedPps)+'/s</div>';
+
+    } else {
+      card.style.left   = tl.left + 'px';
+      card.style.top    = tl.top  + 'px';
+      card.style.width  = cardW + 'px';
+      card.style.height = cardH + 'px';
+      const shortName = d.name
+        .replace('Double Industrial Drill','Dbl. Industrial')
+        .replace(' Drill','')
+        .replace('Mega Emerald','Mg. Emerald')
+        .replace('Mega Plasma','Mg. Plasma')
+        .replace('Ice Plasma','Ice Plasma');
+      const nameSz = Math.max(8, Math.min(13, cardW * 0.115));
+      const ppsSz  = Math.max(8, Math.min(14, cardW * 0.125));
+      card.innerHTML =
+        '<div class="drill-card-name" style="font-size:'+nameSz+'px">'+shortName+'</div>' +
+        '<div class="drill-card-pps"  style="font-size:'+ppsSz+'px">'+fmtPps(boostedPps)+'/s</div>';
+    }
+  }
+
+  function removeOverlayCard(ar, ac) {
+    const key = ar+'_'+ac;
+    if (drillCards[key]) { drillCards[key].remove(); delete drillCards[key]; }
+  }
+
+  // Reposition all overlay cards (call on resize)
+  function repositionCards() {
+    for (let r=0;r<ROWS;r++) for (let c=0;c<COLS;c++) {
+      const p = placed[r][c];
+      if (!p || p.anchorR!==r || p.anchorC!==c) continue;
+      const d = ALL_DRILLS[p.drillIdx];
+      const {w,h} = p.rotated ? {w:d.h,h:d.w} : {w:d.w,h:d.h};
+      const zone = getZone(r,c);
+      renderOverlayCard(r, c, w, h, d, d.pps*getMult(zone), zone);
+    }
+  }
+
+  // ── Hover preview ─────────────────────────────────────────────────────────
+  let lastHover = null;
+  function clearPreview() {
+    if (!lastHover) return;
+    const {r,c,w,h}=lastHover;
+    for (let dr=0;dr<h;dr++) for (let dc=0;dc<w;dc++) {
+      const rr=r+dr,cc=c+dc;
+      if (rr<ROWS&&cc<COLS) cells[rr][cc].classList.remove('preview-ok','preview-bad');
+    }
+    lastHover=null;
+  }
+  function handleHover(r,c,enter) {
+    clearPreview();
+    if (!enter) return;
+    const {w,h}=getDims();
+    const ok = r+h<=ROWS&&c+w<=COLS&&allFree(r,c,w,h)&&sameZone(r,c,w,h);
+    lastHover={r,c,w,h};
+    for (let dr=0;dr<h;dr++) for (let dc=0;dc<w;dc++) {
+      const rr=r+dr,cc=c+dc;
+      if (rr<ROWS&&cc<COLS) cells[rr][cc].classList.add(ok?'preview-ok':'preview-bad');
+    }
+  }
+
+  // ── Place ─────────────────────────────────────────────────────────────────
+  function handleClick(r,c) {
+    if (placed[r][c]) return;
+    const {w,h}=getDims();
+    if (r+h>ROWS||c+w>COLS) return;
+    if (!allFree(r,c,w,h)||!sameZone(r,c,w,h)) return;
+    const zone = getZone(r,c);
+    const d = ALL_DRILLS[selectedIdx];
+    const boosted = d.pps * getMult(zone);
+    for (let dr=0;dr<h;dr++) for (let dc=0;dc<w;dc++)
+      placed[r+dr][c+dc]={drillIdx:selectedIdx,anchorR:r,anchorC:c,rotated};
+    // Hide any zone badges covered by this drill
+    for (let dr=0;dr<h;dr++) for (let dc=0;dc<w;dc++) {
+      const rr=r+dr, cc=c+dc;
+      if ((rr%5===2)&&(cc%5===2)) cells[rr][cc].innerHTML='';
+    }
+    renderOverlayCard(r,c,w,h,d,boosted,zone);
+    updateStats();
+    clearPreview();
+  }
+
+  // ── Remove ────────────────────────────────────────────────────────────────
+  function removeDrill(r,c) {
+    const p=placed[r][c]; if (!p) return;
+    const {anchorR:ar,anchorC:ac,rotated:rot}=p;
+    const d=ALL_DRILLS[p.drillIdx];
+    const {w,h}=rot?{w:d.h,h:d.w}:{w:d.w,h:d.h};
+    for (let dr=0;dr<h;dr++) for (let dc=0;dc<w;dc++) placed[ar+dr][ac+dc]=null;
+    removeOverlayCard(ar,ac);
+    // Restore any zone badges that were hidden
+    const zone=getZone(ar,ac);
+    for (let dr=0;dr<h;dr++) for (let dc=0;dc<w;dc++) {
+      const rr=ar+dr, cc=ac+dc;
+      if ((rr%5===2)&&(cc%5===2)) {
+        const z=getZone(rr,cc);
+        if (z==='z5') cells[rr][cc].innerHTML='<span class="zbadge b5">5×</span>';
+        else if (z==='z3') cells[rr][cc].innerHTML='<span class="zbadge b3">3×</span>';
+        else if (z==='z2') cells[rr][cc].innerHTML='<span class="zbadge b2">2×</span>';
+      }
+    }
+    updateStats();
+  }
+
+  // ── Stats ──────────────────────────────────────────────────────────────────
+  function updateStats() {
+    const seen=new Set(); let total=0;
+    for (let r=0;r<ROWS;r++) for (let c=0;c<COLS;c++) {
+      const p=placed[r][c]; if (!p) continue;
+      const k=p.anchorR+'_'+p.anchorC; if (seen.has(k)) continue;
+      seen.add(k);
+      total += ALL_DRILLS[p.drillIdx].pps * getMult(getZone(p.anchorR,p.anchorC));
+    }
+    document.getElementById('stat-drills').textContent = seen.size;
+    document.getElementById('stat-pps').textContent = fmtPps(total)+' /s';
+  }
+
+  // ── Info card ──────────────────────────────────────────────────────────────
+  function updateDrillInfo() {
+    const d = ALL_DRILLS[selectedIdx];
+    const {w,h}=getDims();
+    const dims = rotated&&d.w!==d.h ? h+'×'+w+' (rotated)' : d.w+'×'+d.h;
+    document.querySelector('.opt-drill-card-name').textContent = d.name;
+    document.querySelector('.opt-drill-card-stats').innerHTML =
+      'Base: '+d.pps.toLocaleString()+' /s<br>' +
+      'Size: '+dims+'<br>' +
+      '<span style="color:#555">'+
+      '2X → '+fmtPps(d.pps*2)+' &bull; '+
+      '3X → '+fmtPps(d.pps*3)+' &bull; '+
+      '5X → '+fmtPps(d.pps*5)+'</span>';
+  }
+
+  // ── Build selects ──────────────────────────────────────────────────────────
+  function buildSelect(elId, drills, indexOffset) {
+    const sel = document.getElementById(elId);
+    drills.forEach((d,i) => {
+      const opt = document.createElement('option');
+      const dims = d.w===1&&d.h===1?'1×1':d.w===1&&d.h===2?'1×2':'2×2';
+      opt.textContent = d.name+' — '+d.pps.toLocaleString()+'/s ('+dims+')';
+      opt.value = indexOffset+i;
+      sel.appendChild(opt);
+    });
+    sel.addEventListener('change', ()=>{
+      selectedIdx = parseInt(sel.value);
+      rotated=false;
+      // Deselect other dropdown
+      const other = elId==='drillSelect'?'drillSelectSpecial':'drillSelect';
+      document.getElementById(other).selectedIndex=-1;
+      updateDrillInfo();
+    });
+  }
+
+  // ── Rotate / Clear ─────────────────────────────────────────────────────────
+  window.rotateSelected = function() {
+    const d=ALL_DRILLS[selectedIdx];
+    if (d.w===d.h) return;
+    rotated=!rotated;
+    updateDrillInfo();
+    clearPreview();
+  };
+  window.clearGrid = function() {
+    for (let r=0;r<ROWS;r++) placed[r].fill(null);
+    buildGrid();
+    overlayEl.innerHTML='';
+    Object.keys(drillCards).forEach(k=>delete drillCards[k]);
+    updateStats();
+  };
+
+  // ── Keybind ────────────────────────────────────────────────────────────────
+  document.addEventListener('keydown', e=>{
+    if ((e.key==='r'||e.key==='R')&&document.getElementById('page-optimizer').classList.contains('active'))
+      rotateSelected();
+  });
+
+  // ── Resize observer ────────────────────────────────────────────────────────
+  new ResizeObserver(repositionCards).observe(wrapEl);
+
+  // ── Init ───────────────────────────────────────────────────────────────────
+  buildGrid();
+  buildSelect('drillSelect', STANDARD_DRILLS, 0);
+  buildSelect('drillSelectSpecial', SPECIAL_DRILLS, STANDARD_DRILLS.length);
+  document.getElementById('drillSelect').selectedIndex = 0;
+  selectedIdx = 0;
+  updateDrillInfo();
+  updateStats();
+})();
+
 </script>
 </body>
 </html>
